@@ -1,13 +1,15 @@
 {
-  "name": "backend-pagos",
+  "name": "mi-backend-pagos",
   "version": "1.0.0",
+  "description": "Backend para procesamiento de pagos con Stripe",
   "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "express": "^4.18.2",
     "stripe": "^12.0.0",
-    "cors": "^2.8.5"
-  },
-  "scripts": {
-    "start": "node server.js"
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3"
   }
 }
