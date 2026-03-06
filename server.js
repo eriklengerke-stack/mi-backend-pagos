@@ -1,17 +1,31 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-// Carga las variables de entorno (asegúrate de tener dotenv instalado)
 require('dotenv').config();
 
+// Inicialización de Stripe
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-// Middleware
+// Middleware básico
 app.use(express.json());
 
-// CONFIGURACIÓN DE CORS: Solo permite peticiones de tu dominio real
+// CONFIGURACIÓN CORS AVANZADA
+// Permite tanto el dominio sin www como con www
+const originesPermitidos = [
+    'https://interconectadosweb.es', 
+    'https://www.interconectadosweb.es'
+];
+
 app.use(cors({
-    origin: 'https://interconectadosweb.es',
+    origin: function (origin, callback) {
+        // Permitimos peticiones sin 'origin' (como llamadas de herramientas de desarrollo)
+        // o si el origen está en nuestra lista de permitidos
+        if (!origin || originesPermitidos.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('No permitido por CORS'));
+        }
+    },
     methods: ['POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
